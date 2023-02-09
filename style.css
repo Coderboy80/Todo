@@ -71,17 +71,13 @@ form {
 }
 
 .task-text {
-  max-width: 90%;
+  max-width: 83%;
+  hyphens: auto;
 }
 
 img {
   width: 1.3rem;
 }
-
-/* .checkbox {
-  background-color: yellow;
-  height: 10rem;
-} */
 
 .completed {
   text-decoration: line-through 2px;
