@@ -11,19 +11,33 @@ const tasks = document.querySelector(".tasks");
 const modalEditTask = document.querySelector(".modal-edit-task");
 const overlay = document.querySelector(".overlay");
 
+const allTasks = JSON.parse(localStorage.getItem("tasks"));
+displayTasks(allTasks);
+
+function displayTasks(taskArr) {
+  tasks.innerHTML = "";
+  taskArr.forEach((task, i) => {
+    const taskEle = `<div class="task">
+  <label class="task-text" for="task-completed">${task}</label>
+  <div class="commands">
+      <img src="/images/notchecked.png" class="btn-check-task" alt="taskCompleted">
+      <img src="/images/bin.png" alt="delete" class="btn-delete-task">
+      <img src="/images/pencil.png" alt="edit" class="btn-edit-task">
+  </div>
+</div>`;
+    tasks.insertAdjacentHTML("beforeend", taskEle);
+  });
+}
+
 btnNewTask.addEventListener("click", function (e) {
   e.preventDefault();
 
   if (inputTextNewTask.value) {
-    const task = `<div class="task">
-                <label class="task-text" for="task-completed">${inputTextNewTask.value}</label>
-                <div class="commands">
-                    <img src="/images/notchecked.png" class="btn-check-task" alt="taskCompleted">
-                    <img src="/images/bin.png" alt="delete" class="btn-delete-task">
-                    <img src="/images/pencil.png" alt="edit" class="btn-edit-task">
-                </div>
-            </div>`;
-    tasks.insertAdjacentHTML("beforeend", task);
+    const task = inputTextNewTask.value;
+
+    allTasks.push(task);
+    displayTasks(allTasks);
+    storeLocally(allTasks);
   }
 
   inputTextNewTask.value = "";
@@ -45,7 +59,12 @@ tasks.addEventListener("click", function (e) {
   let target = e.target;
   task = target.closest(".task");
   if (target.classList.contains("btn-delete-task")) {
-    task.remove();
+    let removeTask = allTasks.findIndex((t) => {
+      return t === task.firstElementChild.textContent;
+    });
+    allTasks.splice(removeTask, 1);
+    displayTasks(allTasks);
+    storeLocally(allTasks);
   } else if (target.classList.contains("btn-edit-task")) {
     showModal();
     inputEditTask.focus();
@@ -63,7 +82,12 @@ tasks.addEventListener("click", function (e) {
 btnEditTaskSubmit.addEventListener("click", function (e) {
   e.preventDefault();
   if (inputEditTask.value) {
-    task.firstElementChild.textContent = inputEditTask.value;
+    let editTask = allTasks.findIndex((t) => {
+      return t === task.firstElementChild.textContent;
+    });
+    allTasks[editTask] = inputEditTask.value;
+    displayTasks(allTasks);
+    storeLocally(allTasks);
   }
   closeModal();
 });
@@ -81,3 +105,7 @@ document.addEventListener("keydown", function (e) {
     closeModal();
   }
 });
+
+function storeLocally(tasks) {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}

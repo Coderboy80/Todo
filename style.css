@@ -79,6 +79,15 @@ img {
   width: 1.3rem;
 }
 
+img:hover {
+  scale: 120%;
+  cursor: pointer;
+}
+button:hover {
+  scale: 120%;
+  cursor: pointer;
+}
+
 .completed {
   text-decoration: line-through 2px;
 }
@@ -127,5 +136,5 @@ img {
 }
 
 .checked {
-  text-decoration: line-through 1.5px;
+  text-decoration: line-through 1.8px;
 }
