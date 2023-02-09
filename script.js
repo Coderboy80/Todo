@@ -11,7 +11,7 @@ const tasks = document.querySelector(".tasks");
 const modalEditTask = document.querySelector(".modal-edit-task");
 const overlay = document.querySelector(".overlay");
 
-const allTasks = JSON.parse(localStorage.getItem("tasks"));
+const allTasks = JSON.parse(localStorage.getItem("tasks")) ?? [];
 displayTasks(allTasks);
 
 function displayTasks(taskArr) {
