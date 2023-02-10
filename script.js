@@ -11,22 +11,26 @@ const tasks = document.querySelector(".tasks");
 const modalEditTask = document.querySelector(".modal-edit-task");
 const overlay = document.querySelector(".overlay");
 
-const allTasks = JSON.parse(localStorage.getItem("tasks")) ?? [];
+let allTasks = JSON.parse(localStorage.getItem("allTheTasks")) ?? [];
 displayTasks(allTasks);
 
-function displayTasks(taskArr) {
+function displayTasks(tasksArr) {
   tasks.innerHTML = "";
-  taskArr.forEach((task, i) => {
+  for (let [key, value] of Object.entries(tasksArr)) {
     const taskEle = `<div class="task">
-  <label class="task-text" for="task-completed">${task}</label>
+  <label class="task-text ${
+    value.isCheck ? "checked" : ""
+  }" for="task-completed">${value.task_}</label>
   <div class="commands">
-      <img src="/images/notchecked.png" class="btn-check-task" alt="taskCompleted">
+      <img src="/images/${
+        value.isCheck ? "checked.png" : "notchecked.png"
+      }" class="btn-check-task" alt="taskCompleted">
       <img src="/images/bin.png" alt="delete" class="btn-delete-task">
       <img src="/images/pencil.png" alt="edit" class="btn-edit-task">
   </div>
 </div>`;
     tasks.insertAdjacentHTML("beforeend", taskEle);
-  });
+  }
 }
 
 btnNewTask.addEventListener("click", function (e) {
@@ -35,7 +39,7 @@ btnNewTask.addEventListener("click", function (e) {
   if (inputTextNewTask.value) {
     const task = inputTextNewTask.value;
 
-    allTasks.push(task);
+    allTasks.push({ task_: task, isCheck: false });
     displayTasks(allTasks);
     storeLocally(allTasks);
   }
@@ -60,7 +64,7 @@ tasks.addEventListener("click", function (e) {
   task = target.closest(".task");
   if (target.classList.contains("btn-delete-task")) {
     let removeTask = allTasks.findIndex((t) => {
-      return t === task.firstElementChild.textContent;
+      return t.task_ === task.firstElementChild.textContent;
     });
     allTasks.splice(removeTask, 1);
     displayTasks(allTasks);
@@ -70,9 +74,21 @@ tasks.addEventListener("click", function (e) {
     inputEditTask.focus();
   } else if (target.classList.contains("btn-check-task")) {
     if (task.firstElementChild.classList.contains("checked")) {
+      for (let [key, value] of Object.entries(allTasks)) {
+        if (value.task_ === task.firstElementChild.textContent) {
+          value.isCheck = false;
+          storeLocally(allTasks);
+        }
+      }
       task.firstElementChild.classList.remove("checked");
       target.src = "/images/notchecked.png";
     } else {
+      for (let [key, value] of Object.entries(allTasks)) {
+        if (value.task_ === task.firstElementChild.textContent) {
+          value.isCheck = true;
+          storeLocally(allTasks);
+        }
+      }
       task.firstElementChild.classList.add("checked");
       target.src = "/images/checked.png";
     }
@@ -83,17 +99,13 @@ btnEditTaskSubmit.addEventListener("click", function (e) {
   e.preventDefault();
   if (inputEditTask.value) {
     let editTask = allTasks.findIndex((t) => {
-      return t === task.firstElementChild.textContent;
+      return t.task_ === task.firstElementChild.textContent;
     });
-    allTasks[editTask] = inputEditTask.value;
+    allTasks[editTask].task_ = inputEditTask.value;
     displayTasks(allTasks);
     storeLocally(allTasks);
   }
   closeModal();
-});
-
-window.addEventListener("error", function (event) {
-  console.log(event);
 });
 
 btnCloseModal.addEventListener("click", function () {
@@ -106,6 +118,6 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-function storeLocally(tasks) {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+function storeLocally(allTaskArr) {
+  localStorage.setItem("allTheTasks", JSON.stringify(allTaskArr));
 }
