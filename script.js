@@ -22,11 +22,11 @@ function displayTasks(tasksArr) {
     value.isCheck ? "checked" : ""
   }" for="task-completed">${value.task_}</label>
   <div class="commands">
-      <img src="/images/${
+      <img title="Task Completed" src="/images/${
         value.isCheck ? "checked.png" : "notchecked.png"
       }" class="btn-check-task" alt="taskCompleted">
-      <img src="/images/bin.png" alt="delete" class="btn-delete-task">
-      <img src="/images/pencil.png" alt="edit" class="btn-edit-task">
+      <img title="Remove Task" src="/images/bin.png" alt="delete" class="btn-delete-task">
+      <img title="Edit Task" src="/images/pencil.png" alt="edit" class="btn-edit-task">
   </div>
 </div>`;
     tasks.insertAdjacentHTML("beforeend", taskEle);
@@ -36,7 +36,15 @@ function displayTasks(tasksArr) {
 btnNewTask.addEventListener("click", function (e) {
   e.preventDefault();
 
-  if (inputTextNewTask.value) {
+  let allTasksText = [];
+  for (let [key, value] of Object.entries(allTasks)) {
+    allTasksText.push(value.task_);
+  }
+
+  if (
+    inputTextNewTask.value &&
+    !allTasksText.includes(inputTextNewTask.value)
+  ) {
     const task = inputTextNewTask.value;
 
     allTasks.push({ task_: task, isCheck: false });
@@ -71,7 +79,9 @@ tasks.addEventListener("click", function (e) {
     storeLocally(allTasks);
   } else if (target.classList.contains("btn-edit-task")) {
     showModal();
+    inputEditTask.value = task.firstElementChild.textContent;
     inputEditTask.focus();
+    inputEditTask.select();
   } else if (target.classList.contains("btn-check-task")) {
     if (task.firstElementChild.classList.contains("checked")) {
       for (let [key, value] of Object.entries(allTasks)) {
@@ -97,7 +107,11 @@ tasks.addEventListener("click", function (e) {
 
 btnEditTaskSubmit.addEventListener("click", function (e) {
   e.preventDefault();
-  if (inputEditTask.value) {
+  let allTasksText = [];
+  for (let [key, value] of Object.entries(allTasks)) {
+    allTasksText.push(value.task_);
+  }
+  if (inputEditTask.value && !allTasksText.includes(inputEditTask.value)) {
     let editTask = allTasks.findIndex((t) => {
       return t.task_ === task.firstElementChild.textContent;
     });
@@ -109,6 +123,9 @@ btnEditTaskSubmit.addEventListener("click", function (e) {
 });
 
 btnCloseModal.addEventListener("click", function () {
+  closeModal();
+});
+overlay.addEventListener("click", function () {
   closeModal();
 });
 

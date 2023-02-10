@@ -6,6 +6,11 @@
   font-family: "Press Start 2P";
 }
 
+::selection {
+  background-color: #eeeeee;
+  color: #222222;
+}
+
 body {
   background-color: #222222;
 }
@@ -41,7 +46,8 @@ form {
 }
 
 #btn-new-task {
-  font-size: 2rem;
+  font-size: 1rem;
+  padding: 0.5rem;
   border-radius: 10px;
   color: white;
   background-color: #222222;
@@ -93,6 +99,7 @@ button:hover {
 }
 
 .modal-edit-task {
+  position: sticky;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -100,7 +107,6 @@ button:hover {
   background-color: #757575;
   color: white;
   font-family: "Press Start 2P";
-  position: absolute;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
@@ -114,7 +120,7 @@ button:hover {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -127,6 +133,10 @@ button:hover {
   padding: 0.5rem;
   font-size: 1rem;
 }
+#input-edit-task ::selection {
+  color: #eeeeee;
+  background: #222222;
+}
 
 #close-modal {
   position: absolute;
@@ -136,5 +146,10 @@ button:hover {
 }
 
 .checked {
-  text-decoration: line-through 1.8px;
+  text-decoration: line-through 1.7px;
+}
+
+#form-new-task {
+  position: sticky;
+  top: 1rem;
 }

@@ -10,29 +10,26 @@
   <body>
     <div class="modal-edit-task hidden">
         <h1>Edit Task</h1>
-              <button id="close-modal">&times;</button>
+              <button title="Close" id="close-modal">&times;</button>
 
         <form><input type="text" id="input-edit-task">
-        <button type="submit" class="btn-edit-task-submit">+</button></form>
+        <button title="Edit Task" type="submit" class="btn-edit-task-submit">-</button></form>
        
     </div>
 
     <div class="main">
         
             <div id="to-do-heading">To-Do</div>
-        <form>
+        <form id="form-new-task">
             <input id="text-input-new-task" placeholder="Taste dog food..."></input>
-            <button type="submit" id="btn-new-task">+</button>
+            <button title="New Task" type="submit" id="btn-new-task">+</button>
         </form>
         <div class="tasks">
-            <div class="tasks">
-            
-        </div>
+
         </div>
 
     </div>
     <div class="overlay hidden"></div>
-
     <script src="script.js"></script>
   </body>
 </html>
