@@ -1,5 +1,23 @@
 "use strict";
 
+// To avoid HTML injection
+const entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+  "/": "&#x2F;",
+  "`": "&#x60;",
+  "=": "&#x3D;",
+};
+
+function escapeHtml(string) {
+  return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
+
 const inputTextNewTask = document.querySelector("#text-input-new-task");
 const inputEditTask = document.querySelector("#input-edit-task");
 
@@ -15,12 +33,12 @@ let allTasks = JSON.parse(localStorage.getItem("allTheTasks")) ?? [];
 displayTasks(allTasks);
 
 function displayTasks(tasksArr) {
-  tasks.innerHTML = "";
+  tasks.textContent = "";
   for (let [key, value] of Object.entries(tasksArr)) {
     const taskEle = `<div class="task">
   <label class="task-text ${
     value.isCheck ? "checked" : ""
-  }" for="task-completed">${value.task_}</label>
+  }" for="task-completed">${escapeHtml(value.task_)}</label>
   <div class="commands">
       <img title="Task Completed" src="/images/${
         value.isCheck ? "checked.png" : "notchecked.png"
