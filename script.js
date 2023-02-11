@@ -60,7 +60,7 @@ btnNewTask.addEventListener("click", function (e) {
   }
 
   if (
-    inputTextNewTask.value &&
+    inputTextNewTask.value.trim() &&
     !allTasksText.includes(inputTextNewTask.value)
   ) {
     const task = inputTextNewTask.value;
@@ -129,7 +129,10 @@ btnEditTaskSubmit.addEventListener("click", function (e) {
   for (let [key, value] of Object.entries(allTasks)) {
     allTasksText.push(value.task_);
   }
-  if (inputEditTask.value && !allTasksText.includes(inputEditTask.value)) {
+  if (
+    inputEditTask.value.trim() &&
+    !allTasksText.includes(inputEditTask.value)
+  ) {
     let editTask = allTasks.findIndex((t) => {
       return t.task_ === task.firstElementChild.textContent;
     });
