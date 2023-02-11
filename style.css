@@ -21,7 +21,6 @@ body {
   gap: 1rem;
   justify-content: center;
   align-items: center;
-
   color: #eeeeee;
 }
 
@@ -96,6 +95,7 @@ button:hover {
 
 .completed {
   text-decoration: line-through 2px;
+  -webkit-text-decoration: line-through 2px;
 }
 
 .modal-edit-task {
@@ -180,5 +180,8 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+  #close-modal {
+    font-size: 1rem;
   }
 }
